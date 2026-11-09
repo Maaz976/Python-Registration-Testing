@@ -1,0 +1,70 @@
+STUDENT COURSE REGISTRATION SYSTEM
+BLACK-BOX INITIAL TEST EXECUTION EVIDENCE
+============================================================
+
+Project: SQE Assignment 2 - Student Course Registration System
+Evidence file: docs/evidence/blackbox-initial.txt
+Test suite: tests/test_blackbox.py
+
+EXECUTION STATUS: PENDING - NOT YET RUN
+
+This file is an evidence-log template, not a record of a completed test run.
+The starter ZIP contains registration.py and the requirements/SRS files, but
+it does not contain tests/test_blackbox.py. Actual pass/fail counts and pytest
+output must be captured after the black-box tests have been implemented.
+No test results have been fabricated.
+
+------------------------------------------------------------
+1. INITIAL EXECUTION DETAILS (complete after running pytest)
+------------------------------------------------------------
+
+Date and time:
+Operating system:
+Python version:
+pytest version:
+Git commit/branch:
+
+Command:
+python -m pytest tests/test_blackbox.py -v
+
+Collected tests:
+Passed:
+Failed:
+Errors:
+Skipped:
+Exit code:
+
+------------------------------------------------------------
+2. CAPTURE THE REAL PYTEST OUTPUT
+------------------------------------------------------------
+
+Run this command from the repository root in PowerShell. It appends the
+actual pytest output below this template:
+
+python -m pytest tests/test_blackbox.py -v 2>&1 | Tee-Object -Append -FilePath docs/evidence/blackbox-initial.txt
+
+Do not replace failed expected results merely to make the tests pass. Check
+each failure against the SRS and record confirmed defects as GitHub Issues.
+Preserve this original output before modifying registration.py.
+
+------------------------------------------------------------
+3. FAILURE / DEFECT NOTES (complete after execution)
+------------------------------------------------------------
+
+Test ID | Requirement ID | Expected result | Actual result | GitHub Issue
+--------|----------------|-----------------|---------------|-------------
+
+
+------------------------------------------------------------
+4. REVIEW CHECKLIST
+------------------------------------------------------------
+
+[ ] tests/test_blackbox.py has been implemented.
+[ ] The initial black-box test command has been executed.
+[ ] The genuine pytest output has been appended above/below this template.
+[ ] Passed, failed, error and skipped counts have been recorded.
+[ ] Each failure has been checked against the SRS.
+[ ] Original failure evidence has been preserved before defect fixes.
+
+IMPORTANT: This file becomes completed initial execution evidence only after
+the real pytest output and execution details have been added.
