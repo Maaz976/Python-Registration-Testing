@@ -1,0 +1,35 @@
+.......F...F..F........F.........F..F.F.....FFF......FF.FF...F..         [100%]
+=============================== warnings summary ===============================
+../../../opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/anyio/pytest_plugin.py:14
+  /opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/anyio/pytest_plugin.py:14: PytestRemovedIn10Warning: _pytest.python.CallSpec2 has been renamed to CallSpec.
+  The CallSpec2 alias will be removed in pytest 10.
+  Update imports to use CallSpec instead.
+  See https://docs.pytest.org/en/stable/deprecations.html#callspec2-renamed
+    from _pytest.python import CallSpec2
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+================================ tests coverage ================================
+_______________ coverage: platform linux, python 3.12.14-final-0 _______________
+
+Name                     Stmts   Miss Branch BrPart  Cover   Missing
+--------------------------------------------------------------------
+b4_sut/registration.py      57      3     26      3    93%   51, 59, 71
+--------------------------------------------------------------------
+TOTAL                       57      3     26      3    93%
+=========================== short test summary info ============================
+FAILED upload/test_blackbox.py::test_ecp_08_positive_dues_block_registration_decision
+FAILED upload/test_blackbox.py::test_ecp_12_some_prerequisites_missing_blocks_registration
+FAILED upload/test_blackbox.py::test_ecp_15_course_full_returns_waitlisted - ...
+FAILED upload/test_blackbox.py::test_bva_credit_hour_boundaries[BVA-04] - ass...
+FAILED upload/test_blackbox.py::test_bva_credit_hour_boundaries[BVA-14] - ass...
+FAILED upload/test_blackbox.py::test_bva_course_capacity_boundaries[BVA-17]
+FAILED upload/test_blackbox.py::test_bva_course_capacity_boundaries[BVA-19]
+FAILED upload/test_blackbox.py::test_bva_outstanding_dues_near_zero[BVA-25]
+FAILED upload/test_blackbox.py::test_decision_table_registration_priority[DT-01]
+FAILED upload/test_blackbox.py::test_decision_table_registration_priority[DT-02]
+FAILED upload/test_blackbox.py::test_decision_table_registration_priority[DT-09]
+FAILED upload/test_blackbox.py::test_decision_table_registration_priority[DT-10]
+FAILED upload/test_blackbox.py::test_state_02_waitlisted_registration_adds_student_once_without_enrollment_change
+FAILED upload/test_blackbox.py::test_state_unsuccessful_registration_does_not_change_objects[STATE-03-DUES_BLOCK]
+FAILED upload/test_blackbox.py::test_state_07_successful_withdrawal_updates_student_and_course
+15 failed, 49 passed, 1 warning in 0.23s
