@@ -17,7 +17,7 @@ The black-box case spreadsheets and their executable pytest mapping contain:
 | Additional registration/withdrawal state checks | `STATE-01`–`STATE-09` | 9 | `tests/test_blackbox.py` |
 | **Total black-box executions** | | **64** | |
 
-The implementation originally used a `test/` directory in one downloaded repository snapshot; the assignment's required submission path is `tests/`. Ensure the final repository uses the required plural path consistently.
+The repository now uses the assignment's required `tests/` directory consistently. Historical evidence files retain the paths that were current when those runs were captured.
 
 ## 2. A5 — Exact-duplicate analysis
 
