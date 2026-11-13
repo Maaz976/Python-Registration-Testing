@@ -1,0 +1,47 @@
+============================= test session starts ==============================
+platform linux -- Python 3.12.14, pytest-9.2.0, pluggy-1.7.0 -- /opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3
+cachedir: .pytest_cache
+rootdir: /workspace/scratch/2a667338f22a
+plugins: cov-7.1.0, anyio-4.14.2
+collecting ... collected 11 items
+
+deliverables_b4/tests/test_whitebox.py::test_whitebox_validation_and_short_circuit[WB-CC-01] PASSED [  9%]
+deliverables_b4/tests/test_whitebox.py::test_whitebox_validation_and_short_circuit[WB-CC-03] PASSED [ 18%]
+deliverables_b4/tests/test_whitebox.py::test_whitebox_validation_and_short_circuit[WB-CC-04] PASSED [ 27%]
+deliverables_b4/tests/test_whitebox.py::test_whitebox_validation_and_short_circuit[WB-CC-05] PASSED [ 36%]
+deliverables_b4/tests/test_whitebox.py::test_whitebox_registration_decision_priority[WB-CC-02] PASSED [ 45%]
+deliverables_b4/tests/test_whitebox.py::test_whitebox_registration_decision_priority[WB-CC-06] PASSED [ 54%]
+deliverables_b4/tests/test_whitebox.py::test_whitebox_registration_decision_priority[WB-CC-07] PASSED [ 63%]
+deliverables_b4/tests/test_whitebox.py::test_whitebox_registration_decision_priority[WB-CC-08] PASSED [ 72%]
+deliverables_b4/tests/test_whitebox.py::test_whitebox_registration_decision_priority[WB-CC-09] PASSED [ 81%]
+deliverables_b4/tests/test_whitebox.py::test_whitebox_registration_decision_priority[WB-CC-10] FAILED [ 90%]
+deliverables_b4/tests/test_whitebox.py::test_whitebox_registration_decision_priority[WB-CC-11] FAILED [100%]
+
+=================================== FAILURES ===================================
+____________ test_whitebox_registration_decision_priority[WB-CC-10] ____________
+deliverables_b4/tests/test_whitebox.py:146: in test_whitebox_registration_decision_priority
+    assert actual_status == expected_status
+E   AssertionError: assert 'REGISTERED' == 'WAITLISTED'
+E     
+E     - WAITLISTED
+E     + REGISTERED
+____________ test_whitebox_registration_decision_priority[WB-CC-11] ____________
+deliverables_b4/tests/test_whitebox.py:146: in test_whitebox_registration_decision_priority
+    assert actual_status == expected_status
+E   AssertionError: assert 'REGISTERED' == 'DUES_BLOCK'
+E     
+E     - DUES_BLOCK
+E     + REGISTERED
+=============================== warnings summary ===============================
+../../../opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/anyio/pytest_plugin.py:14
+  /opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/anyio/pytest_plugin.py:14: PytestRemovedIn10Warning: _pytest.python.CallSpec2 has been renamed to CallSpec.
+  The CallSpec2 alias will be removed in pytest 10.
+  Update imports to use CallSpec instead.
+  See https://docs.pytest.org/en/stable/deprecations.html#callspec2-renamed
+    from _pytest.python import CallSpec2
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED deliverables_b4/tests/test_whitebox.py::test_whitebox_registration_decision_priority[WB-CC-10]
+FAILED deliverables_b4/tests/test_whitebox.py::test_whitebox_registration_decision_priority[WB-CC-11]
+==================== 2 failed, 9 passed, 1 warning in 0.04s ====================
