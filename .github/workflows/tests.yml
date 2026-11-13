@@ -1,0 +1,56 @@
+name: Student Registration - Pytest and Coverage
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Run black-box and white-box tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+          cache: pip
+
+      - name: Install testing dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+
+      - name: Run pytest with statement and branch coverage
+        shell: bash
+        run: |
+          # Pytest discovers test_*.py in tests/ (and legacy test/ folders).
+          # pipefail makes genuine test failures fail this job, even with tee.
+          set -o pipefail
+          python -m pytest -v \
+            --cov=registration \
+            --cov-branch \
+            --cov-report=term-missing \
+            --cov-report=xml:coverage.xml \
+            --cov-report=html:htmlcov \
+            --junitxml=pytest-results.xml \
+            2>&1 | tee pytest-output.txt
+
+      - name: Preserve test and coverage evidence (even on failure)
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pytest-coverage-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            pytest-output.txt
+            pytest-results.xml
+            coverage.xml
+            htmlcov/
+          if-no-files-found: warn
+          retention-days: 30
