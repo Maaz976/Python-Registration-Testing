@@ -3,7 +3,7 @@
 **Project:** Student Course Registration System  
 **Assignment:** SE3002 Software Quality Engineering — Assignment 2  
 **Scope:** Part A5 (exact-duplicate optimization) and Part B2 (before/after structural coverage)  
-**Implementation status:** `registration.py` was not modified for this review.
+**Implementation status:** Initial design and coverage analysis used the unchanged starter implementation. Confirmed defects were later corrected on the `defect-fixes` branch; pre-fix evidence is preserved.
 
 ## 1. Design inventory and test traceability
 
@@ -62,7 +62,7 @@ The earlier saved initial run on **Windows / Python 3.14.6** displayed **92% com
 - **Line 59:** `WAITLISTED` remains unreachable. The earlier capacity validation rejects enrollment above capacity, while the later waitlist decision checks `enrolled > capacity` instead of handling the SRS-defined `enrolled == capacity` case (FR-08).
 - **Line 71:** The waitlist append in `register_course` remains unreachable for ordinary inputs because `registration_decision` never returns `WAITLISTED` in the supplied implementation (FR-12).
 
-Full 100% branch coverage is not attainable without correcting the confirmed control-flow defect. Do not alter requirement-based tests to hide these gaps.
+Those two gaps were caused by the confirmed control-flow defects, not by missing tests. After the fixes, both lines and branches execute and the combined suite reaches 100% statement/branch coverage (see section 4.1).
 
 ### 3.2 White-box additions that justify new execution
 
@@ -77,8 +77,8 @@ Full 100% branch coverage is not attainable without correcting the confirmed con
 | `WB-CC-07` | D4 True: duplicate registration. |
 | `WB-CC-08` | D5 True: missing prerequisite. |
 | `WB-CC-09` | D6 True: credit limit. |
-| `WB-CC-10` | D7 False even at full capacity: exposes FR-08 defect. |
-| `WB-CC-11` | D3 False at positive Rs. 1: exposes FR-04 defect. |
+| `WB-CC-10` | D7 True at full capacity: regression for FR-08 issue #4. |
+| `WB-CC-11` | D3 True at positive Rs. 1: regression for FR-04 issue #2. |
 
 The four unique cases `WB-CC-02`–`WB-CC-05` demonstrate all three independent effects for the selected compound validation decision (manual masking MC/DC: 3/3). **`pytest-cov` does not measure MC/DC directly.** Refer to `docs/White-Box-Testing.docx` for the truth tables and pair rationale.
 
@@ -88,8 +88,26 @@ The four unique cases `WB-CC-02`–`WB-CC-05` demonstrate all three independent 
 - `docs/evidence/blackbox-baseline-linux.txt` — comparable initial Linux coverage run (49 passed, 15 failed).
 - `docs/evidence/whitebox-initial.txt` — white-box run (9 passed, 2 failed).
 - `docs/evidence/whitebox-combined-coverage.txt` — combined Linux run (58 passed, 17 failed).
+- `docs/evidence/whitebox-final.txt` — white-box-only run after fixes (16 passed, 100% coverage).
+- `docs/evidence/final-regression-coverage.txt` — full regression run after fixes (80 passed, 100% coverage).
 
-The additional two white-box failures are **new failed test IDs for already known defect types**, not automatically two new unique defects. Specifically, `WB-CC-10` demonstrates the full-course availability bug, and `WB-CC-11` demonstrates the any-positive-dues bug. Maintain the relevant GitHub Issues and keep initial failure evidence before making changes on a future `defect-fixes` branch.
+The additional two white-box failures were **new failed test IDs for already known defect types**, not two new unique defects. Specifically, `WB-CC-10` demonstrated the full-course availability bug, and `WB-CC-11` demonstrated the any-positive-dues bug. Both now pass as regression tests.
+
+### 4.1 Post-fix regression results
+
+The fixes were applied on the `defect-fixes` branch, one commit per defect, without weakening any requirement-derived assertion. Five additional non-duplicate regression cases (`REG-01`–`REG-05`) exercise combinations not used by the original design cases.
+
+| Measure | Initial black-box baseline | Final full regression |
+|---|---:|---:|
+| Tests collected | 64 | 80 |
+| Passed / failed | 49 / 15 | **80 / 0** |
+| Statements executed | 54 / 57 | **54 / 54** |
+| Statement coverage | 94.74% | **100%** |
+| Branch arcs executed | 23 / 26 | **26 / 26** |
+| Branch coverage | 88.46% | **100%** |
+| Combined `pytest-cov` coverage | 92.77% | **100%** |
+
+Defect issues #1–#5 are addressed by focused commits and the tests that previously failed now pass. Coverage was re-measured on Python 3.14.4 with pytest 9.2.0 and pytest-cov 7.1.0; the evidence file records the exact command and environment.
 
 ## 5. Pull request review checklist
 
