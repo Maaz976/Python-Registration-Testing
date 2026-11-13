@@ -1,0 +1,37 @@
+WHITE-BOX FINAL EXECUTION EVIDENCE
+Command: python -m pytest tests/test_whitebox.py -v --cov=registration --cov-branch --cov-report=term-missing
+
+============================= test session starts ==============================
+platform linux -- Python 3.14.4, pytest-9.2.0, pluggy-1.7.0 -- /tmp/sqe-venv/bin/python
+cachedir: .pytest_cache
+rootdir: /home/ahmd/workspace/sqe_assignment/Python-Registration-Testing
+configfile: pytest.ini
+plugins: cov-7.1.0
+collecting ... collected 16 items
+
+tests/test_whitebox.py::test_whitebox_validation_and_short_circuit[WB-CC-01] PASSED [  6%]
+tests/test_whitebox.py::test_whitebox_validation_and_short_circuit[WB-CC-03] PASSED [ 12%]
+tests/test_whitebox.py::test_whitebox_validation_and_short_circuit[WB-CC-04] PASSED [ 18%]
+tests/test_whitebox.py::test_whitebox_validation_and_short_circuit[WB-CC-05] PASSED [ 25%]
+tests/test_whitebox.py::test_whitebox_registration_decision_priority[WB-CC-02] PASSED [ 31%]
+tests/test_whitebox.py::test_whitebox_registration_decision_priority[WB-CC-06] PASSED [ 37%]
+tests/test_whitebox.py::test_whitebox_registration_decision_priority[WB-CC-07] PASSED [ 43%]
+tests/test_whitebox.py::test_whitebox_registration_decision_priority[WB-CC-08] PASSED [ 50%]
+tests/test_whitebox.py::test_whitebox_registration_decision_priority[WB-CC-09] PASSED [ 56%]
+tests/test_whitebox.py::test_whitebox_registration_decision_priority[WB-CC-10] PASSED [ 62%]
+tests/test_whitebox.py::test_whitebox_registration_decision_priority[WB-CC-11] PASSED [ 68%]
+tests/test_whitebox.py::test_reg_01_exact_eighteen_credit_total_is_accepted PASSED [ 75%]
+tests/test_whitebox.py::test_reg_02_positive_dues_take_priority_over_full_course PASSED [ 81%]
+tests/test_whitebox.py::test_reg_03_completed_superset_satisfies_all_prerequisites PASSED [ 87%]
+tests/test_whitebox.py::test_reg_04_full_course_at_eighteen_credits_is_waitlisted PASSED [ 93%]
+tests/test_whitebox.py::test_reg_05_withdrawal_from_last_enrolled_seat_reaches_zero PASSED [100%]
+
+================================ tests coverage ================================
+_______________ coverage: platform linux, python 3.14.4-final-0 ________________
+
+Name              Stmts   Miss Branch BrPart  Cover   Missing
+-------------------------------------------------------------
+registration.py      54     11     26      3    78%   31, 33, 65-72, 78
+-------------------------------------------------------------
+TOTAL                54     11     26      3    78%
+============================== 16 passed in 0.25s ==============================

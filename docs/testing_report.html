@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>SE3002 Assignment 2 — Final Testing Report</title>
+<style>
+  @page { size: A4; margin: 18mm 15mm; }
+  body { font-family: "DejaVu Sans", Arial, sans-serif; font-size: 10pt; color: #17202a; line-height: 1.38; }
+  h1 { color: #123b5d; font-size: 22pt; margin: 0 0 4mm 0; }
+  h2 { color: #123b5d; font-size: 15pt; border-bottom: 2px solid #2e86ab; padding-bottom: 1.5mm; margin-top: 8mm; }
+  h3 { color: #1f618d; font-size: 12pt; margin-top: 5mm; }
+  .cover { border: 3px solid #123b5d; padding: 14mm; margin-bottom: 8mm; background: #f4f9fc; }
+  .subtitle { font-size: 13pt; color: #2e4053; }
+  .meta td { padding: 1.2mm 3mm 1.2mm 0; vertical-align: top; }
+  table { border-collapse: collapse; width: 100%; margin: 3mm 0 5mm 0; font-size: 8.7pt; }
+  th { background: #123b5d; color: white; text-align: left; padding: 1.6mm; }
+  td { border: 1px solid #aab7b8; padding: 1.4mm; vertical-align: top; }
+  tr:nth-child(even) td { background: #f8fbfc; }
+  code, pre { font-family: "DejaVu Sans Mono", monospace; font-size: 8.3pt; }
+  pre { background: #f3f6f4; border-left: 3px solid #2e86ab; padding: 2.5mm; white-space: pre-wrap; }
+  .ok { color: #1e8449; font-weight: bold; }
+  .bad { color: #b03a2e; font-weight: bold; }
+  .warn { background: #fef9e7; border-left: 4px solid #d4ac0d; padding: 3mm; }
+  .small { font-size: 8.4pt; color: #566573; }
+  ul, ol { margin-top: 1.5mm; }
+  li { margin-bottom: 1mm; }
+  .pagebreak { page-break-before: always; }
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <div class="subtitle">SE3002 — Software Quality Engineering</div>
+  <h1>Assignment 2 — Final Testing Report</h1>
+  <div class="subtitle">Student Course Registration System</div>
+  <p><strong>Black-box testing · White-box testing · Defect management · GitHub collaboration</strong></p>
+  <table class="meta">
+    <tr><td><strong>Repository</strong></td><td>https://github.com/Maaz976/Python-Registration-Testing</td></tr>
+    <tr><td><strong>System under test</strong></td><td><code>registration.py</code> (Student Course Registration System)</td></tr>
+    <tr><td><strong>Oracle</strong></td><td><code>REQUIREMENTS.md</code> / <code>Student_Registration_SRS.docx</code> (FR-01–FR-15)</td></tr>
+    <tr><td><strong>Final regression</strong></td><td class="ok">80 passed, 0 failed · 100% statement and branch coverage</td></tr>
+    <tr><td><strong>Open PRs</strong></td><td><a href="https://github.com/Maaz976/Python-Registration-Testing/pull/6">PR #6 — black-box harness and structure</a><br>
+      <a href="https://github.com/Maaz976/Python-Registration-Testing/pull/7">PR #7 — defect fixes and regression evidence</a></td></tr>
+    <tr><td><strong>Prepared by</strong></td><td>Pir Ahmed Shah (<code>PirAhmedShah</code>) · Repository owner: <code>Maaz976</code></td></tr>
+  </table>
+</div>
+
+<h2>1. Executive summary</h2>
+<p>This report documents requirements-based black-box design, structural white-box analysis, defect reporting, implementation fixes, and regression evidence for the supplied Student Course Registration System. Expected results were derived from the SRS rather than from the implementation.</p>
+<table>
+  <tr><th>Area</th><th>Result</th></tr>
+  <tr><td>A1 — Equivalence Class Partitioning</td><td>20 cases covering valid/invalid credits, dues, prerequisites, availability, duplicate registration, and validation priority.</td></tr>
+  <tr><td>A2 — Boundary Value Analysis</td><td>25 cases covering current credits 0–18, course credits 1–4, combined 18-credit maximum, capacity/enrollment, and dues around zero.</td></tr>
+  <tr><td>A3 — Decision Table</td><td>6 rules and 10 executable cases respecting the FR-09 priority: dues → duplicate → prerequisites → credit limit → availability.</td></tr>
+  <tr><td>A4 — Black-box pytest</td><td>64 executions. Initial run: <span class="bad">49 passed, 15 failed</span>; failures preserved as defect evidence.</td></tr>
+  <tr><td>A5 — Optimisation</td><td>0 exact duplicates after applying an operation + complete pre-state + expected-result criterion; all 55 design cases retained.</td></tr>
+  <tr><td>B1 — CFG and cyclomatic complexity</td><td>Short-circuit-expanded CFG; V(G) = 27 − 19 + 2 = 10; 10 independent basis paths; all 10 executable after fixes.</td></tr>
+  <tr><td>B2 — Statement/branch coverage</td><td>Initial 94.74% statement / 88.46% branch; after white-box additions 96.49% / 92.31%; after fixes <strong>100% / 100%</strong>.</td></tr>
+  <tr><td>B3 — Condition coverage and MC/DC</td><td>9 atomic conditions analysed with T/F/NE truth tables; independent-effect pairs for the compound validation guard produce 3/3 masking MC/DC.</td></tr>
+  <tr><td>B4 — White-box pytest</td><td>11 structural cases plus 5 focused regression cases (<code>REG-01</code>–<code>REG-05</code>).</td></tr>
+  <tr><td>C — Collaboration and defects</td><td>5 GitHub issues (#1–#5), 2 open PRs (#6, #7), descriptive commits, and GitHub Actions evidence including legitimate pre-fix failures.</td></tr>
+  <tr><td>D — Final regression</td><td><span class="ok">80 passed, 0 failed</span>; 54/54 statements and 26/26 branch arcs covered (100%).</td></tr>
+</table>
+
+<h2>2. Repository and method</h2>
+<h3>2.1 Required structure</h3>
+<pre>SQE-Assignment-2/
+├── registration.py
+├── requirements.txt
+├── README.md
+├── REQUIREMENTS.md
+├── pytest.ini
+├── tests/
+│   ├── test_blackbox.py
+│   └── test_whitebox.py
+├── docs/
+│   ├── blackbox_test_design.xlsx
+│   ├── decision_table.xlsx
+│   ├── cfg.png
+│   ├── testing_report.pdf
+│   ├── White-Box-Testing.docx
+│   ├── testing_optimization_and_coverage.md
+│   └── evidence/
+└── .github/workflows/tests.yml</pre>
+<p>The test suite was standardised on the required plural <code>tests/</code> path and the CFG artifact on <code>docs/cfg.png</code>. Historical evidence keeps the paths that were current when each run was captured.</p>
+
+<h3>2.2 Workflow used</h3>
+<ol>
+  <li>Read the SRS and derive expected outcomes before inspecting implementation branches.</li>
+  <li>Design ECP, BVA, and decision-table cases in workbooks and implement them in <code>tests/test_blackbox.py</code>.</li>
+  <li>Execute the black-box suite, preserve all failures, and open one GitHub Issue per distinct defect.</li>
+  <li>Inspect source code, draw the CFG, calculate V(G), and design condition/MC-DC analysis.</li>
+  <li>Add structural tests in <code>tests/test_whitebox.py</code> and measure initial/final coverage.</li>
+  <li>Fix confirmed defects on <code>defect-fixes</code>, one commit per defect, and rerun the complete suite.</li>
+  <li>Record final coverage and open pull requests without merging, preserving review and Actions evidence.</li>
+</ol>
+
+<h2>3. Part A — Black-box testing</h2>
+<h3>3.1 A1 — Equivalence Class Partitioning</h3>
+<p>The ECP workbook records requirement ID, class type, representative input, expected output, expected state change, and test ID. Twenty cases (<code>ECP-01</code>–<code>ECP-20</code>) cover the required dimensions.</p>
+<table>
+  <tr><th>Dimension</th><th>Valid classes</th><th>Invalid / blocked classes</th><th>Representative IDs</th></tr>
+  <tr><td>Current / course credits</td><td>Current 0–18; course 1–4; combined ≤ 18</td><td>Current &lt; 0 or &gt; 18; course &lt; 1 or &gt; 4</td><td>ECP-01–ECP-06</td></tr>
+  <tr><td>Outstanding dues</td><td>Rs. 0; positive numeric input</td><td>Negative dues; any balance &gt; 0 blocks registration</td><td>ECP-07–ECP-09, ECP-20</td></tr>
+  <tr><td>Prerequisites</td><td>Empty required set; all required completed</td><td>Some or all required courses missing</td><td>ECP-10–ECP-13</td></tr>
+  <tr><td>Availability</td><td><code>enrolled &lt; capacity</code></td><td><code>enrolled == capacity</code> → waitlist; invalid capacity/enrollment raises</td><td>ECP-14–ECP-18</td></tr>
+  <tr><td>Duplicate registration</td><td>Course not already registered</td><td>Course already in <code>registered_courses</code></td><td>ECP-19</td></tr>
+</table>
+
+<h3>3.2 A2 — Boundary Value Analysis</h3>
+<p>Twenty-five boundary cases (<code>BVA-01</code>–<code>BVA-25</code>) include at-boundary, just-inside, and just-outside values. Key cases:</p>
+<table>
+  <tr><th>Boundary</th><th>Values exercised</th><th>Expected outcomes</th><th>Test IDs</th></tr>
+  <tr><td>Current credits 0–18</td><td>−1, 0, 1, 17, 18, 19</td><td>ValueError; True; True; True; False; ValueError</td><td>BVA-01–BVA-06</td></tr>
+  <tr><td>Course credits 1–4</td><td>0, 1, 2, 3, 4, 5</td><td>ValueError; True for 1–4; ValueError at 5</td><td>BVA-07–BVA-12</td></tr>
+  <tr><td>Combined maximum 18</td><td>17, 18, 19</td><td>True; True; False</td><td>BVA-13–BVA-15</td></tr>
+  <tr><td>Capacity / enrollment</td><td>capacity 0/1/30; enrolled 0/1/29/30/31/−1</td><td>REGISTERED at open seat; WAITLISTED at exact capacity; ValueError outside valid region</td><td>BVA-16–BVA-22</td></tr>
+  <tr><td>Dues near zero</td><td>−1, 0, 1</td><td>ValueError; REGISTERED; DUES_BLOCK</td><td>BVA-23–BVA-25</td></tr>
+</table>
+
+<h3>3.3 A3 — Decision Table</h3>
+<p>The decision table uses FR-09 priority. A dash means the condition is not evaluated because an earlier rule determines the outcome.</p>
+<table>
+  <tr><th>Condition / action</th><th>R1</th><th>R2</th><th>R3</th><th>R4</th><th>R5</th><th>R6</th></tr>
+  <tr><td>Outstanding dues &gt; Rs. 0?</td><td>T</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td></tr>
+  <tr><td>Already registered?</td><td>—</td><td>T</td><td>F</td><td>F</td><td>F</td><td>F</td></tr>
+  <tr><td>All prerequisites satisfied?</td><td>—</td><td>—</td><td>F</td><td>T</td><td>T</td><td>T</td></tr>
+  <tr><td>Credit total ≤ 18?</td><td>—</td><td>—</td><td>—</td><td>F</td><td>T</td><td>T</td></tr>
+  <tr><td>Seat available?</td><td>—</td><td>—</td><td>—</td><td>—</td><td>F</td><td>T</td></tr>
+  <tr><th>Expected outcome</th><th>DUES_BLOCK</th><th>ALREADY_REGISTERED</th><th>PREREQUISITES_MISSING</th><th>CREDIT_LIMIT</th><th>WAITLISTED</th><th>REGISTERED</th></tr>
+</table>
+<p>Ten executable cases (<code>DT-01</code>–<code>DT-10</code>) cover every outcome and important priority combinations, including dues overriding duplicate registration and credit-limit failure overriding full capacity.</p>
+
+<h3>3.4 A4 — Black-box pytest execution</h3>
+<p>All 64 black-box executions are implemented in <code>tests/test_blackbox.py</code> with <code>assert</code> and <code>pytest.raises()</code>. State snapshots verify FR-10 and FR-12: unsuccessful decisions and failed registrations must not mutate either object.</p>
+<table>
+  <tr><th>Stage</th><th>Collected</th><th>Passed</th><th>Failed</th><th>Interpretation</th></tr>
+  <tr><td>Initial black-box baseline (unchanged implementation)</td><td>64</td><td>49</td><td class="bad">15</td><td>Legitimate failures against 5 confirmed defects</td></tr>
+  <tr><td>Black-box + white-box (still unchanged)</td><td>75</td><td>58</td><td class="bad">17</td><td>Two additional structural test IDs expose the same two defect classes</td></tr>
+  <tr><td>After defect fixes + regression cases</td><td>80</td><td class="ok">80</td><td class="ok">0</td><td>Complete pass</td></tr>
+</table>
+<p>Evidence: <code>docs/evidence/blackbox-initial.txt</code>, <code>docs/evidence/whitebox-combined-coverage.txt</code>, and <code>docs/evidence/final-regression-coverage.txt</code>.</p>
+
+<h3>3.5 A5 — Test-suite optimisation</h3>
+<p><strong>Duplicate criterion:</strong> two cases are exact duplicates only when they use the same operation, the same complete pre-state and concrete inputs, and require the same result/exception and state-change assertions. Sharing a requirement or expected status is not enough.</p>
+<p>No exact duplicates were found across ECP, BVA, and decision-table suites. Similar-looking cases differ in credits, dues, capacity, enrollment, prerequisites, or priority conditions. Exact duplicate count = <strong>0</strong>; cases removed = <strong>0</strong>; all 55 design cases retained with their IDs and technique traceability.</p>
+
+<h2 class="pagebreak">4. Part B — White-box testing</h2>
+<h3>4.1 B1 — CFG, cyclomatic complexity, and basis paths</h3>
+<p>The CFG expands Python short-circuit and chained comparisons into atomic predicate nodes. <code>registration_decision()</code> has 9 atomic decision nodes: D1 (negative dues), D2a/D2b/D2c (capacity guard), D3 (dues), D4 (duplicate), D5 (prerequisites), D6 (credit limit), and D7 (availability).</p>
+<table>
+  <tr><th>Method</th><th>Calculation</th><th>Result</th></tr>
+  <tr><td>Predicate nodes + 1</td><td>P = 9 atomic predicates</td><td>V(G) = 9 + 1 = <strong>10</strong></td></tr>
+  <tr><td>Graph theory</td><td>N = 1 entry + 9 decisions + 8 terminals + 1 virtual exit = 19; E = 27</td><td>V(G) = 27 − 19 + 2 = <strong>10</strong></td></tr>
+  <tr><td>Regions</td><td>9 bounded regions + 1 outer region</td><td>V(G) = <strong>10</strong></td></tr>
+</table>
+<p>Counting each source <code>if</code> once gives 7 decisions and V(G) = 8. The report explicitly uses the short-circuit-expanded convention so the CFG, condition table, and basis paths are consistent. The CFG image is <code>docs/cfg.png</code>.</p>
+<table>
+  <tr><th>Path</th><th>Decision sequence</th><th>Representative test</th><th>Expected outcome</th></tr>
+  <tr><td>1</td><td>D1(T) → raise</td><td>WB-CC-01</td><td>ValueError(&quot;Invalid dues&quot;)</td></tr>
+  <tr><td>2</td><td>D1(F) → D2a(T) → raise</td><td>WB-CC-03</td><td>ValueError(&quot;Invalid capacity or enrollment&quot;)</td></tr>
+  <tr><td>3</td><td>D1(F) → D2a(F) → D2b(T) → raise</td><td>WB-CC-04</td><td>ValueError(&quot;Invalid capacity or enrollment&quot;)</td></tr>
+  <tr><td>4</td><td>D1(F) → D2a(F) → D2b(F) → D2c(T) → raise</td><td>WB-CC-05</td><td>ValueError(&quot;Invalid capacity or enrollment&quot;)</td></tr>
+  <tr><td>5</td><td>D1–D2(F) → D3(T)</td><td>WB-CC-06 / WB-CC-11</td><td>DUES_BLOCK</td></tr>
+  <tr><td>6</td><td>D1–D3(F) → D4(T)</td><td>WB-CC-07</td><td>ALREADY_REGISTERED</td></tr>
+  <tr><td>7</td><td>D1–D4(F) → D5(T)</td><td>WB-CC-08</td><td>PREREQUISITES_MISSING</td></tr>
+  <tr><td>8</td><td>D1–D5(F) → D6(T)</td><td>WB-CC-09</td><td>CREDIT_LIMIT</td></tr>
+  <tr><td>9</td><td>D1–D6(F) → D7(T)</td><td>WB-CC-10 / REG-04</td><td>WAITLISTED</td></tr>
+  <tr><td>10</td><td>D1–D7(F)</td><td>WB-CC-02</td><td>REGISTERED</td></tr>
+</table>
+<p>Before correction, path 9 was infeasible because D2b rejected <code>enrolled &gt; capacity</code> and D7 tested the wrong condition. After the FR-08 fix, D7 tests <code>enrolled &gt;= capacity</code> and all 10 basis paths are executable.</p>
+
+<h3>4.2 B2 — Statement and branch coverage</h3>
+<table>
+  <tr><th>Measure</th><th>Black-box only (initial)</th><th>Black-box + white-box</th><th>After defect fixes</th></tr>
+  <tr><td>Tests collected</td><td>64</td><td>75</td><td>80</td></tr>
+  <tr><td>Passed / failed</td><td>49 / 15</td><td>58 / 17</td><td class="ok">80 / 0</td></tr>
+  <tr><td>Statement coverage</td><td>94.74%</td><td>96.49%</td><td class="ok">100% (54/54)</td></tr>
+  <tr><td>Branch coverage</td><td>88.46%</td><td>92.31%</td><td class="ok">100% (26/26)</td></tr>
+  <tr><td>Combined pytest-cov</td><td>92.77%</td><td>95.18%</td><td class="ok">100%</td></tr>
+  <tr><td>Missing locations</td><td>51, 59, 71</td><td>59, 71</td><td class="ok">None</td></tr>
+</table>
+<p>The initial gaps were structural consequences of confirmed defects: line 51 (DUES_BLOCK) was reachable only through the incorrect <code>&gt; 1000</code> threshold; lines 59 and 71 (WAITLISTED and waitlist append) were unreachable because the availability condition used <code>&gt;</code> instead of <code>&gt;=</code>. The fixes make those locations reachable without changing any expected value.</p>
+
+<h3>4.3 B3 — Condition coverage and MC/DC</h3>
+<p>The selected compound decision is the capacity validation guard <em>D2 = A or B or C</em>, where A = <code>enrolled &lt; 0</code>, B = <code>enrolled &gt; capacity</code>, and C = <code>capacity &lt; 1</code>. Python short-circuits left-to-right. “NE” means not evaluated, not a third Boolean value.</p>
+<table>
+  <tr><th>Case</th><th>D1</th><th>A</th><th>B</th><th>C</th><th>D3</th><th>D4</th><th>D5</th><th>D6</th><th>D7</th><th>Outcome</th></tr>
+  <tr><td>WB-CC-01</td><td>T</td><td>NE</td><td>NE</td><td>NE</td><td>NE</td><td>NE</td><td>NE</td><td>NE</td><td>NE</td><td>Invalid dues</td></tr>
+  <tr><td>WB-CC-02</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>REGISTERED</td></tr>
+  <tr><td>WB-CC-03</td><td>F</td><td>T</td><td>NE</td><td>NE</td><td>NE</td><td>NE</td><td>NE</td><td>NE</td><td>NE</td><td>Invalid capacity</td></tr>
+  <tr><td>WB-CC-04</td><td>F</td><td>F</td><td>T</td><td>NE</td><td>NE</td><td>NE</td><td>NE</td><td>NE</td><td>NE</td><td>Invalid capacity</td></tr>
+  <tr><td>WB-CC-05</td><td>F</td><td>F</td><td>F</td><td>T</td><td>NE</td><td>NE</td><td>NE</td><td>NE</td><td>NE</td><td>Invalid capacity</td></tr>
+  <tr><td>WB-CC-06</td><td>F</td><td>F</td><td>F</td><td>F</td><td>T</td><td>NE</td><td>NE</td><td>NE</td><td>NE</td><td>DUES_BLOCK</td></tr>
+  <tr><td>WB-CC-07</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>T</td><td>NE</td><td>NE</td><td>NE</td><td>ALREADY_REGISTERED</td></tr>
+  <tr><td>WB-CC-08</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>T</td><td>NE</td><td>NE</td><td>PREREQUISITES_MISSING</td></tr>
+  <tr><td>WB-CC-09</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>T</td><td>NE</td><td>CREDIT_LIMIT</td></tr>
+  <tr><td>WB-CC-10</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>T</td><td>WAITLISTED</td></tr>
+  <tr><td>WB-CC-11</td><td>F</td><td>F</td><td>F</td><td>F</td><td>T</td><td>NE</td><td>NE</td><td>NE</td><td>NE</td><td>DUES_BLOCK</td></tr>
+</table>
+<table>
+  <tr><th>Atomic condition</th><th>True case</th><th>False case</th><th>Controlled change</th><th>Effect</th></tr>
+  <tr><td>A = enrolled &lt; 0</td><td>WB-CC-03</td><td>WB-CC-02</td><td>enrolled −1 → 0; B and C logically false</td><td>Guard T → F</td></tr>
+  <tr><td>B = enrolled &gt; capacity</td><td>WB-CC-04</td><td>WB-CC-02</td><td>enrolled 11 → 0; A and C remain false</td><td>Guard T → F</td></tr>
+  <tr><td>C = capacity &lt; 1</td><td>WB-CC-05</td><td>WB-CC-02</td><td>capacity 0 → 10; A and B remain false</td><td>Guard T → F</td></tr>
+</table>
+<p><strong>Manual masking MC/DC for D2:</strong> 3/3 independent effects = 100%. Across the function’s 9 atomic conditions, after the fixes each condition can evaluate both True and False (18/18 condition outcomes). <code>pytest-cov</code> does not measure condition coverage or MC/DC; these figures are manual design-level calculations.</p>
+
+<h3>4.4 B4 — White-box pytest implementation</h3>
+<p><code>tests/test_whitebox.py</code> documents the targeted branch, condition, or path for every case. It contains <code>WB-CC-01</code>–<code>WB-CC-11</code> plus post-fix regression cases <code>REG-01</code>–<code>REG-05</code>. WB-CC-02 through WB-CC-05 reuse one baseline to demonstrate the three independent MC/DC effects without duplicating the baseline execution.</p>
+
+<h2 class="pagebreak">5. Part C — GitHub collaboration and defect management</h2>
+<h3>5.1 Repository and branches</h3>
+<p>The repository contains the starter implementation, SRS, test suites, workbooks, CFG, evidence, final report, and workflow. Feature branches and descriptive commits include <code>blackbox-testing</code> (structure, pytest discovery, baseline evidence), <code>defect-fixes</code> (five focused fix commits plus regression coverage), and the existing <code>testing-documentation</code>/<code>testing-documentation-review</code> branches.</p>
+
+<h3>5.2 GitHub Issues</h3>
+<table>
+  <tr><th>Issue</th><th>Defect</th><th>Requirement</th><th>Failed test IDs</th><th>Status</th></tr>
+  <tr><td><a href="https://github.com/Maaz976/Python-Registration-Testing/issues/1">#1</a></td><td>Exactly 18 credits rejected</td><td>FR-01</td><td>BVA-04, BVA-14, DT-10</td><td>Fixed in PR #7; open pending merge</td></tr>
+  <tr><td><a href="https://github.com/Maaz976/Python-Registration-Testing/issues/2">#2</a></td><td>Positive dues do not block</td><td>FR-04</td><td>ECP-08, BVA-25, DT-01, DT-02, STATE-03, WB-CC-11</td><td>Fixed in PR #7; open pending merge</td></tr>
+  <tr><td><a href="https://github.com/Maaz976/Python-Registration-Testing/issues/3">#3</a></td><td>Partial prerequisites accepted</td><td>FR-03, FR-06</td><td>ECP-12</td><td>Fixed in PR #7; open pending merge</td></tr>
+  <tr><td><a href="https://github.com/Maaz976/Python-Registration-Testing/issues/4">#4</a></td><td>Full course registers instead of waitlisting</td><td>FR-08, FR-12</td><td>ECP-15, BVA-17, BVA-19, DT-09, STATE-02, WB-CC-10</td><td>Fixed in PR #7; open pending merge</td></tr>
+  <tr><td><a href="https://github.com/Maaz976/Python-Registration-Testing/issues/5">#5</a></td><td>Withdrawal does not decrement enrollment</td><td>FR-13</td><td>STATE-07</td><td>Fixed in PR #7; open pending merge</td></tr>
+</table>
+
+<h3>5.3 Pull requests and review</h3>
+<table>
+  <tr><th>PR</th><th>Branch → base</th><th>Summary</th><th>Test outcome</th><th>Status</th></tr>
+  <tr><td><a href="https://github.com/Maaz976/Python-Registration-Testing/pull/6">#6</a></td><td><code>blackbox-testing</code> → <code>main</code></td><td>Required tests/ structure, cfg.png, pytest.ini, real initial baseline evidence</td><td>49 passed / 15 expected failures; 92% combined</td><td>Open</td></tr>
+  <tr><td><a href="https://github.com/Maaz976/Python-Registration-Testing/pull/7">#7</a></td><td><code>defect-fixes</code> → <code>main</code></td><td>Five defect fixes, regression cases, 100% coverage evidence, final report</td><td>80 passed / 0 failed; 100% coverage</td><td>Open</td></tr>
+</table>
+<p>PR #7 links issues #1–#5 and states the dependency on PR #6. PRs are intentionally left open for review; no merge was performed. Review checklists cover correctness of SRS expectations, preservation of pre-fix evidence, focused commits, and regression results.</p>
+
+<h3>5.4 GitHub Actions</h3>
+<p><code>.github/workflows/tests.yml</code> installs <code>requirements.txt</code>, runs the full pytest suite with statement and branch coverage, writes JUnit XML/XML/HTML reports, and uploads artifacts even when tests fail. Earlier runs failed legitimately on the five defects; the final <code>defect-fixes</code> run passed at 80/80 with 100% coverage (run <code>43433099531</code>). Actions history: <a href="https://github.com/Maaz976/Python-Registration-Testing/actions">repository Actions tab</a>. The original failing run is preserved as run <code>43418723784</code>.</p>
+
+<h2>6. Part D — Defect status and final assessment</h2>
+<h3>6.1 Defect fixes</h3>
+<table>
+  <tr><th>Defect</th><th>Root cause</th><th>Correction</th><th>Regression verification</th></tr>
+  <tr><td>DEF-01</td><td><code>current + new &lt; 18</code></td><td><code>&lt;= 18</code></td><td>BVA-04, BVA-14, DT-10, REG-01</td></tr>
+  <tr><td>DEF-02</td><td><code>dues &gt; 1000</code></td><td><code>dues &gt; 0</code></td><td>ECP-08, BVA-25, DT-01, DT-02, STATE-03, WB-CC-11, REG-02</td></tr>
+  <tr><td>DEF-03</td><td>intersection instead of subset</td><td><code>required.issubset(completed)</code></td><td>ECP-12, ECP-13, REG-03</td></tr>
+  <tr><td>DEF-04</td><td><code>enrolled &gt; capacity</code> after rejecting invalid enrollment</td><td><code>enrolled &gt;= capacity</code> → WAITLISTED</td><td>ECP-15, BVA-17, BVA-19, DT-09, STATE-02, WB-CC-10, REG-04</td></tr>
+  <tr><td>DEF-05</td><td>missing <code>course.enrolled -= 1</code></td><td>decrement on successful withdrawal</td><td>STATE-07, REG-05</td></tr>
+</table>
+
+<h3>6.2 Final coverage and quality outcome</h3>
+<table>
+  <tr><th>Measure</th><th>Initial</th><th>Final</th><th>Change</th></tr>
+  <tr><td>Black-box tests</td><td>64 collected / 49 passed / 15 failed</td><td>64 / 64 passed</td><td class="ok">15 defects resolved</td></tr>
+  <tr><td>White-box tests</td><td>11 collected / 9 passed / 2 failed</td><td>16 / 16 passed</td><td class="ok">+5 regression cases</td></tr>
+  <tr><td>Statement coverage</td><td>94.74%</td><td>100% (54/54)</td><td class="ok">+5.26 points</td></tr>
+  <tr><td>Branch coverage</td><td>88.46%</td><td>100% (26/26)</td><td class="ok">+11.54 points</td></tr>
+  <tr><td>Combined pytest-cov</td><td>92.77%</td><td>100%</td><td class="ok">+7.23 points</td></tr>
+</table>
+<p class="warn">Issues #1–#5 remain open in GitHub because PR #7 was intentionally not merged. The implementation fixes and all regression evidence are present on the <code>defect-fixes</code> branch; issue closure is pending reviewer approval and merge.</p>
+
+<h3>6.3 Contribution summary</h3>
+<table>
+  <tr><th>Member</th><th>GitHub</th><th>Contribution</th></tr>
+  <tr><td>Muhammad Maaz</td><td><code>Maaz976</code></td><td>Repository setup, black-box design workbook, initial evidence, CFG, white-box documentation, traceability matrix, defect issues.</td></tr>
+  <tr><td>Muhammad Muzammil Ayan</td><td><code>MuhammadmuzammilAyan1</code></td><td>Black-box pytest implementation, white-box pytest suite, coverage analysis, GitHub Actions workflow, optimisation and coverage review.</td></tr>
+  <tr><td>Pir Ahmed Shah</td><td><code>PirAhmedShah</code></td><td>Baseline reproduction, repository structure cleanup, five defect fixes, regression cases, final 100% coverage evidence, PRs #6/#7, final testing report.</td></tr>
+</table>
+
+<h3>6.4 Reproduction commands</h3>
+<pre>python -m pip install -r requirements.txt
+python -m pytest -v
+python -m pytest tests/test_blackbox.py -v --cov=registration --cov-branch --cov-report=term-missing
+python -m pytest tests/test_whitebox.py -v --cov=registration --cov-branch --cov-report=term-missing
+python -m pytest tests/ --cov=registration --cov-branch --cov-report=term-missing</pre>
+
+<h3>6.5 References</h3>
+<ul>
+  <li>Repository: <a href="https://github.com/Maaz976/Python-Registration-Testing">https://github.com/Maaz976/Python-Registration-Testing</a></li>
+  <li>Issues: <a href="https://github.com/Maaz976/Python-Registration-Testing/issues">https://github.com/Maaz976/Python-Registration-Testing/issues</a></li>
+  <li>PR #6: <a href="https://github.com/Maaz976/Python-Registration-Testing/pull/6">black-box harness and repository structure</a></li>
+  <li>PR #7: <a href="https://github.com/Maaz976/Python-Registration-Testing/pull/7">defect fixes and regression evidence</a></li>
+  <li>Actions: <a href="https://github.com/Maaz976/Python-Registration-Testing/actions">GitHub Actions history</a></li>
+  <li>Case design: <code>docs/blackbox_test_design.xlsx</code>, <code>docs/decision_table.xlsx</code></li>
+  <li>White-box analysis: <code>docs/White-Box-Testing.docx</code>, <code>docs/cfg.png</code></li>
+</ul>
+
+</body>
+</html>

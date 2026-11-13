@@ -13,7 +13,7 @@ Structural condition IDs from the report:
     D4  : duplicate registration
     D5  : missing prerequisites
     D6  : credit ineligibility
-    D7  : later availability check; True is unreachable in supplied code
+    D7  : later availability check; True identifies a full course
 
 MC/DC independent-effect pairs for D2 = A or B or C:
     A: WB-CC-03 (True) vs WB-CC-02 (False)
@@ -22,14 +22,22 @@ MC/DC independent-effect pairs for D2 = A or B or C:
 
 The MC/DC pairs intentionally share one baseline instead of rerunning it
 three times. ``pytest-cov`` does not directly measure MC/DC; document the
-manual 3/3 result separately. Run this file WITHOUT editing registration.py.
+manual 3/3 result separately. The defect-oriented cases below remain as
+regression tests after the fixes on the ``defect-fixes`` branch.
 """
 
 from copy import deepcopy
 
 import pytest
 
-from registration import Course, Student, registration_decision
+from registration import (
+    Course,
+    Student,
+    check_credit_limit,
+    prerequisites_satisfied,
+    registration_decision,
+    withdraw_course,
+)
 
 
 def _baseline_objects():
@@ -123,12 +131,9 @@ def test_whitebox_validation_and_short_circuit(
         pytest.param(
             {"current_credits": 17}, {}, "CREDIT_LIMIT", id="WB-CC-09"
         ),
-        # WB-CC-10: D7 remains False at exact capacity (FR-08 DEFECT).
-        # The correct expected status is WAITLISTED; the original code returns
-        # REGISTERED. Preserve this legitimate failure for GitHub Issue evidence.
+        # WB-CC-10 / REG-04: D7 True at exact capacity (FR-08, issue #4).
         pytest.param({}, {"enrolled": 10}, "WAITLISTED", id="WB-CC-10"),
-        # WB-CC-11: D3 is False at dues=1 although FR-04 requires blocking.
-        # The correct expected status is DUES_BLOCK; do not change it to pass.
+        # WB-CC-11 / REG-02: any positive dues blocks registration (issue #2).
         pytest.param(
             {"outstanding_dues": 1}, {}, "DUES_BLOCK", id="WB-CC-11"
         ),
@@ -144,3 +149,52 @@ def test_whitebox_registration_decision_priority(
     actual_status = registration_decision(student, course)
     assert (student, course) == before
     assert actual_status == expected_status
+
+
+# ---------------------------------------------------------------------------
+# Post-fix regression cases (GitHub Issues #1-#5)
+# ---------------------------------------------------------------------------
+
+
+def test_reg_01_exact_eighteen_credit_total_is_accepted():
+    """REG-01 / FR-01 / issue #1: 14 + 4 is exactly the 18-credit maximum."""
+    assert check_credit_limit(14, 4) is True
+
+
+def test_reg_02_positive_dues_take_priority_over_full_course():
+    """REG-02 / FR-04 + FR-09 / issue #2: dues block before availability."""
+    student, course = _configure_objects({"outstanding_dues": 2}, {"enrolled": 10})
+    assert registration_decision(student, course) == "DUES_BLOCK"
+
+
+def test_reg_03_completed_superset_satisfies_all_prerequisites():
+    """REG-03 / FR-03 / issue #3: extra completed courses do not break validation."""
+    assert prerequisites_satisfied(
+        {"CS101", "MATH101", "PHYS101"}, {"CS101", "MATH101"}
+    ) is True
+
+
+def test_reg_04_full_course_at_eighteen_credits_is_waitlisted():
+    """REG-04 / FR-08 / issue #4: exact credit and capacity boundaries combine."""
+    student = _baseline_objects()[0]
+    course = _baseline_objects()[1]
+    student.current_credits = 14
+    student.completed_courses = set()
+    course.credit_hours = 4
+    course.capacity = 10
+    course.enrolled = 10
+    assert registration_decision(student, course) == "WAITLISTED"
+
+
+def test_reg_05_withdrawal_from_last_enrolled_seat_reaches_zero():
+    """REG-05 / FR-13 / issue #5: withdrawing the last seat decrements enrollment."""
+    student = _baseline_objects()[0]
+    course = _baseline_objects()[1]
+    student.current_credits = 3
+    student.registered_courses = {course.code}
+    course.enrolled = 1
+
+    assert withdraw_course(student, course) is True
+    assert course.enrolled == 0
+    assert student.current_credits == 0
+    assert course.code not in student.registered_courses
