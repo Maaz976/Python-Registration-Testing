@@ -1,0 +1,233 @@
+============================= test session starts ==============================
+platform linux -- Python 3.12.14, pytest-9.2.0, pluggy-1.7.0 -- /opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3
+cachedir: .pytest_cache
+rootdir: /workspace/scratch/2a667338f22a
+plugins: cov-7.1.0, anyio-4.14.2
+collecting ... collected 75 items
+
+upload/test_blackbox.py::test_ecp_check_credit_limit_valid_classes[ECP-01] PASSED [  1%]
+upload/test_blackbox.py::test_ecp_check_credit_limit_valid_classes[ECP-02] PASSED [  2%]
+upload/test_blackbox.py::test_ecp_check_credit_limit_invalid_classes[ECP-03] PASSED [  4%]
+upload/test_blackbox.py::test_ecp_check_credit_limit_invalid_classes[ECP-04] PASSED [  5%]
+upload/test_blackbox.py::test_ecp_check_credit_limit_invalid_classes[ECP-05] PASSED [  6%]
+upload/test_blackbox.py::test_ecp_check_credit_limit_invalid_classes[ECP-06] PASSED [  8%]
+upload/test_blackbox.py::test_ecp_07_zero_dues_allow_registration_decision PASSED [  9%]
+upload/test_blackbox.py::test_ecp_08_positive_dues_block_registration_decision FAILED [ 10%]
+upload/test_blackbox.py::test_ecp_09_negative_dues_raise_value_error PASSED [ 12%]
+upload/test_blackbox.py::test_ecp_10_empty_prerequisite_set_is_satisfied PASSED [ 13%]
+upload/test_blackbox.py::test_ecp_11_all_prerequisites_completed PASSED  [ 14%]
+upload/test_blackbox.py::test_ecp_12_some_prerequisites_missing_blocks_registration FAILED [ 16%]
+upload/test_blackbox.py::test_ecp_13_no_prerequisites_completed_blocks_registration PASSED [ 17%]
+upload/test_blackbox.py::test_ecp_14_seat_available_returns_registered PASSED [ 18%]
+upload/test_blackbox.py::test_ecp_15_course_full_returns_waitlisted FAILED [ 20%]
+upload/test_blackbox.py::test_ecp_invalid_capacity_or_enrollment[ECP-16] PASSED [ 21%]
+upload/test_blackbox.py::test_ecp_invalid_capacity_or_enrollment[ECP-17] PASSED [ 22%]
+upload/test_blackbox.py::test_ecp_invalid_capacity_or_enrollment[ECP-18] PASSED [ 24%]
+upload/test_blackbox.py::test_ecp_19_already_registered_student_is_rejected PASSED [ 25%]
+upload/test_blackbox.py::test_ecp_20_negative_dues_validation_precedes_invalid_capacity PASSED [ 26%]
+upload/test_blackbox.py::test_bva_credit_hour_boundaries[BVA-01] PASSED  [ 28%]
+upload/test_blackbox.py::test_bva_credit_hour_boundaries[BVA-02] PASSED  [ 29%]
+upload/test_blackbox.py::test_bva_credit_hour_boundaries[BVA-03] PASSED  [ 30%]
+upload/test_blackbox.py::test_bva_credit_hour_boundaries[BVA-04] FAILED  [ 32%]
+upload/test_blackbox.py::test_bva_credit_hour_boundaries[BVA-05] PASSED  [ 33%]
+upload/test_blackbox.py::test_bva_credit_hour_boundaries[BVA-06] PASSED  [ 34%]
+upload/test_blackbox.py::test_bva_credit_hour_boundaries[BVA-07] PASSED  [ 36%]
+upload/test_blackbox.py::test_bva_credit_hour_boundaries[BVA-08] PASSED  [ 37%]
+upload/test_blackbox.py::test_bva_credit_hour_boundaries[BVA-09] PASSED  [ 38%]
+upload/test_blackbox.py::test_bva_credit_hour_boundaries[BVA-10] PASSED  [ 40%]
+upload/test_blackbox.py::test_bva_credit_hour_boundaries[BVA-11] PASSED  [ 41%]
+upload/test_blackbox.py::test_bva_credit_hour_boundaries[BVA-12] PASSED  [ 42%]
+upload/test_blackbox.py::test_bva_credit_hour_boundaries[BVA-13] PASSED  [ 44%]
+upload/test_blackbox.py::test_bva_credit_hour_boundaries[BVA-14] FAILED  [ 45%]
+upload/test_blackbox.py::test_bva_credit_hour_boundaries[BVA-15] PASSED  [ 46%]
+upload/test_blackbox.py::test_bva_course_capacity_boundaries[BVA-16] PASSED [ 48%]
+upload/test_blackbox.py::test_bva_course_capacity_boundaries[BVA-17] FAILED [ 49%]
+upload/test_blackbox.py::test_bva_course_capacity_boundaries[BVA-18] PASSED [ 50%]
+upload/test_blackbox.py::test_bva_course_capacity_boundaries[BVA-19] FAILED [ 52%]
+upload/test_blackbox.py::test_bva_invalid_capacity_and_enrollment[BVA-20] PASSED [ 53%]
+upload/test_blackbox.py::test_bva_invalid_capacity_and_enrollment[BVA-21] PASSED [ 54%]
+upload/test_blackbox.py::test_bva_invalid_capacity_and_enrollment[BVA-22] PASSED [ 56%]
+upload/test_blackbox.py::test_bva_outstanding_dues_near_zero[BVA-23] PASSED [ 57%]
+upload/test_blackbox.py::test_bva_outstanding_dues_near_zero[BVA-24] PASSED [ 58%]
+upload/test_blackbox.py::test_bva_outstanding_dues_near_zero[BVA-25] FAILED [ 60%]
+upload/test_blackbox.py::test_decision_table_registration_priority[DT-01] FAILED [ 61%]
+upload/test_blackbox.py::test_decision_table_registration_priority[DT-02] FAILED [ 62%]
+upload/test_blackbox.py::test_decision_table_registration_priority[DT-03] PASSED [ 64%]
+upload/test_blackbox.py::test_decision_table_registration_priority[DT-04] PASSED [ 65%]
+upload/test_blackbox.py::test_decision_table_registration_priority[DT-05] PASSED [ 66%]
+upload/test_blackbox.py::test_decision_table_registration_priority[DT-06] PASSED [ 68%]
+upload/test_blackbox.py::test_decision_table_registration_priority[DT-07] PASSED [ 69%]
+upload/test_blackbox.py::test_decision_table_registration_priority[DT-08] PASSED [ 70%]
+upload/test_blackbox.py::test_decision_table_registration_priority[DT-09] FAILED [ 72%]
+upload/test_blackbox.py::test_decision_table_registration_priority[DT-10] FAILED [ 73%]
+upload/test_blackbox.py::test_state_01_successful_registration_updates_student_and_course PASSED [ 74%]
+upload/test_blackbox.py::test_state_02_waitlisted_registration_adds_student_once_without_enrollment_change FAILED [ 76%]
+upload/test_blackbox.py::test_state_unsuccessful_registration_does_not_change_objects[STATE-03-DUES_BLOCK] FAILED [ 77%]
+upload/test_blackbox.py::test_state_unsuccessful_registration_does_not_change_objects[STATE-04-ALREADY_REGISTERED] PASSED [ 78%]
+upload/test_blackbox.py::test_state_unsuccessful_registration_does_not_change_objects[STATE-05-PREREQUISITES_MISSING] PASSED [ 80%]
+upload/test_blackbox.py::test_state_unsuccessful_registration_does_not_change_objects[STATE-06-CREDIT_LIMIT] PASSED [ 81%]
+upload/test_blackbox.py::test_state_07_successful_withdrawal_updates_student_and_course FAILED [ 82%]
+upload/test_blackbox.py::test_state_08_withdrawal_when_not_registered_leaves_objects_unchanged PASSED [ 84%]
+upload/test_blackbox.py::test_state_09_registration_value_error_does_not_change_objects PASSED [ 85%]
+deliverables_b4/tests/test_whitebox.py::test_whitebox_validation_and_short_circuit[WB-CC-01] PASSED [ 86%]
+deliverables_b4/tests/test_whitebox.py::test_whitebox_validation_and_short_circuit[WB-CC-03] PASSED [ 88%]
+deliverables_b4/tests/test_whitebox.py::test_whitebox_validation_and_short_circuit[WB-CC-04] PASSED [ 89%]
+deliverables_b4/tests/test_whitebox.py::test_whitebox_validation_and_short_circuit[WB-CC-05] PASSED [ 90%]
+deliverables_b4/tests/test_whitebox.py::test_whitebox_registration_decision_priority[WB-CC-02] PASSED [ 92%]
+deliverables_b4/tests/test_whitebox.py::test_whitebox_registration_decision_priority[WB-CC-06] PASSED [ 93%]
+deliverables_b4/tests/test_whitebox.py::test_whitebox_registration_decision_priority[WB-CC-07] PASSED [ 94%]
+deliverables_b4/tests/test_whitebox.py::test_whitebox_registration_decision_priority[WB-CC-08] PASSED [ 96%]
+deliverables_b4/tests/test_whitebox.py::test_whitebox_registration_decision_priority[WB-CC-09] PASSED [ 97%]
+deliverables_b4/tests/test_whitebox.py::test_whitebox_registration_decision_priority[WB-CC-10] FAILED [ 98%]
+deliverables_b4/tests/test_whitebox.py::test_whitebox_registration_decision_priority[WB-CC-11] FAILED [100%]
+
+=================================== FAILURES ===================================
+____________ test_ecp_08_positive_dues_block_registration_decision _____________
+upload/test_blackbox.py:145: in test_ecp_08_positive_dues_block_registration_decision
+    assert registration_decision(student, course) == "DUES_BLOCK"
+E   AssertionError: assert 'REGISTERED' == 'DUES_BLOCK'
+E     
+E     - DUES_BLOCK
+E     + REGISTERED
+__________ test_ecp_12_some_prerequisites_missing_blocks_registration __________
+upload/test_blackbox.py:178: in test_ecp_12_some_prerequisites_missing_blocks_registration
+    assert registration_decision(student, course) == "PREREQUISITES_MISSING"
+E   AssertionError: assert 'REGISTERED' == 'PREREQUISITES_MISSING'
+E     
+E     - PREREQUISITES_MISSING
+E     + REGISTERED
+__________________ test_ecp_15_course_full_returns_waitlisted __________________
+upload/test_blackbox.py:208: in test_ecp_15_course_full_returns_waitlisted
+    assert registration_decision(student, course) == "WAITLISTED"
+E   AssertionError: assert 'REGISTERED' == 'WAITLISTED'
+E     
+E     - WAITLISTED
+E     + REGISTERED
+___________________ test_bva_credit_hour_boundaries[BVA-04] ____________________
+upload/test_blackbox.py:283: in test_bva_credit_hour_boundaries
+    assert check_credit_limit(current_credits, new_credits) is expected
+E   assert False is True
+E    +  where False = check_credit_limit(17, 1)
+___________________ test_bva_credit_hour_boundaries[BVA-14] ____________________
+upload/test_blackbox.py:283: in test_bva_credit_hour_boundaries
+    assert check_credit_limit(current_credits, new_credits) is expected
+E   assert False is True
+E    +  where False = check_credit_limit(15, 3)
+_________________ test_bva_course_capacity_boundaries[BVA-17] __________________
+upload/test_blackbox.py:321: in test_bva_course_capacity_boundaries
+    assert registration_decision(student, course) == expected
+E   AssertionError: assert 'REGISTERED' == 'WAITLISTED'
+E     
+E     - WAITLISTED
+E     + REGISTERED
+_________________ test_bva_course_capacity_boundaries[BVA-19] __________________
+upload/test_blackbox.py:321: in test_bva_course_capacity_boundaries
+    assert registration_decision(student, course) == expected
+E   AssertionError: assert 'REGISTERED' == 'WAITLISTED'
+E     
+E     - WAITLISTED
+E     + REGISTERED
+_________________ test_bva_outstanding_dues_near_zero[BVA-25] __________________
+upload/test_blackbox.py:362: in test_bva_outstanding_dues_near_zero
+    assert registration_decision(student, course) == expected
+E   AssertionError: assert 'REGISTERED' == 'DUES_BLOCK'
+E     
+E     - DUES_BLOCK
+E     + REGISTERED
+_______________ test_decision_table_registration_priority[DT-01] _______________
+upload/test_blackbox.py:541: in test_decision_table_registration_priority
+    assert registration_decision(student, course) == expected
+E   AssertionError: assert 'REGISTERED' == 'DUES_BLOCK'
+E     
+E     - DUES_BLOCK
+E     + REGISTERED
+_______________ test_decision_table_registration_priority[DT-02] _______________
+upload/test_blackbox.py:541: in test_decision_table_registration_priority
+    assert registration_decision(student, course) == expected
+E   AssertionError: assert 'ALREADY_REGISTERED' == 'DUES_BLOCK'
+E     
+E     - DUES_BLOCK
+E     + ALREADY_REGISTERED
+_______________ test_decision_table_registration_priority[DT-09] _______________
+upload/test_blackbox.py:541: in test_decision_table_registration_priority
+    assert registration_decision(student, course) == expected
+E   AssertionError: assert 'CREDIT_LIMIT' == 'WAITLISTED'
+E     
+E     - WAITLISTED
+E     + CREDIT_LIMIT
+_______________ test_decision_table_registration_priority[DT-10] _______________
+upload/test_blackbox.py:541: in test_decision_table_registration_priority
+    assert registration_decision(student, course) == expected
+E   AssertionError: assert 'CREDIT_LIMIT' == 'REGISTERED'
+E     
+E     - REGISTERED
+E     + CREDIT_LIMIT
+_ test_state_02_waitlisted_registration_adds_student_once_without_enrollment_change _
+upload/test_blackbox.py:571: in test_state_02_waitlisted_registration_adds_student_once_without_enrollment_change
+    assert first_result == "WAITLISTED"
+E   AssertionError: assert 'REGISTERED' == 'WAITLISTED'
+E     
+E     - WAITLISTED
+E     + REGISTERED
+_ test_state_unsuccessful_registration_does_not_change_objects[STATE-03-DUES_BLOCK] _
+upload/test_blackbox.py:623: in test_state_unsuccessful_registration_does_not_change_objects
+    assert register_course(student, course) == expected
+E   AssertionError: assert 'REGISTERED' == 'DUES_BLOCK'
+E     
+E     - DUES_BLOCK
+E     + REGISTERED
+________ test_state_07_successful_withdrawal_updates_student_and_course ________
+upload/test_blackbox.py:639: in test_state_07_successful_withdrawal_updates_student_and_course
+    assert course.enrolled == 4
+E   AssertionError: assert 5 == 4
+E    +  where 5 = Course(code='CS307', credit_hours=3, capacity=10, enrolled=5, prerequisites=set(), waitlist=[]).enrolled
+____________ test_whitebox_registration_decision_priority[WB-CC-10] ____________
+deliverables_b4/tests/test_whitebox.py:146: in test_whitebox_registration_decision_priority
+    assert actual_status == expected_status
+E   AssertionError: assert 'REGISTERED' == 'WAITLISTED'
+E     
+E     - WAITLISTED
+E     + REGISTERED
+____________ test_whitebox_registration_decision_priority[WB-CC-11] ____________
+deliverables_b4/tests/test_whitebox.py:146: in test_whitebox_registration_decision_priority
+    assert actual_status == expected_status
+E   AssertionError: assert 'REGISTERED' == 'DUES_BLOCK'
+E     
+E     - DUES_BLOCK
+E     + REGISTERED
+=============================== warnings summary ===============================
+../../../opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/anyio/pytest_plugin.py:14
+  /opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/anyio/pytest_plugin.py:14: PytestRemovedIn10Warning: _pytest.python.CallSpec2 has been renamed to CallSpec.
+  The CallSpec2 alias will be removed in pytest 10.
+  Update imports to use CallSpec instead.
+  See https://docs.pytest.org/en/stable/deprecations.html#callspec2-renamed
+    from _pytest.python import CallSpec2
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+================================ tests coverage ================================
+_______________ coverage: platform linux, python 3.12.14-final-0 _______________
+
+Name                     Stmts   Miss Branch BrPart  Cover   Missing
+--------------------------------------------------------------------
+b4_sut/registration.py      57      2     26      2    95%   59, 71
+--------------------------------------------------------------------
+TOTAL                       57      2     26      2    95%
+=========================== short test summary info ============================
+FAILED upload/test_blackbox.py::test_ecp_08_positive_dues_block_registration_decision
+FAILED upload/test_blackbox.py::test_ecp_12_some_prerequisites_missing_blocks_registration
+FAILED upload/test_blackbox.py::test_ecp_15_course_full_returns_waitlisted - ...
+FAILED upload/test_blackbox.py::test_bva_credit_hour_boundaries[BVA-04] - ass...
+FAILED upload/test_blackbox.py::test_bva_credit_hour_boundaries[BVA-14] - ass...
+FAILED upload/test_blackbox.py::test_bva_course_capacity_boundaries[BVA-17]
+FAILED upload/test_blackbox.py::test_bva_course_capacity_boundaries[BVA-19]
+FAILED upload/test_blackbox.py::test_bva_outstanding_dues_near_zero[BVA-25]
+FAILED upload/test_blackbox.py::test_decision_table_registration_priority[DT-01]
+FAILED upload/test_blackbox.py::test_decision_table_registration_priority[DT-02]
+FAILED upload/test_blackbox.py::test_decision_table_registration_priority[DT-09]
+FAILED upload/test_blackbox.py::test_decision_table_registration_priority[DT-10]
+FAILED upload/test_blackbox.py::test_state_02_waitlisted_registration_adds_student_once_without_enrollment_change
+FAILED upload/test_blackbox.py::test_state_unsuccessful_registration_does_not_change_objects[STATE-03-DUES_BLOCK]
+FAILED upload/test_blackbox.py::test_state_07_successful_withdrawal_updates_student_and_course
+FAILED deliverables_b4/tests/test_whitebox.py::test_whitebox_registration_decision_priority[WB-CC-10]
+FAILED deliverables_b4/tests/test_whitebox.py::test_whitebox_registration_decision_priority[WB-CC-11]
+=================== 17 failed, 58 passed, 1 warning in 0.63s ===================
